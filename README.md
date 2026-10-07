@@ -12,7 +12,7 @@ Press L+R at any time to open an in-game keyboard and chat directly with Verity,
 
 * A Living, Unhinged Entity: Verity isn't static. The more you lean on him for help, the more his behavior shifts, mutates, and unravels. What starts as a helpful companion slowly reveals that something is deeply wrong.
 
-* Evolving Phases & Multiple Endings: Experience a multi-staged descent packed with beneficial, bizarre, and outright terrifying effects. (For spoilers, scroll to the bottom).
+* Evolving Phases & Multiple Endings: Experience a multi-staged descent loaded with beneficial, bizarre, and outright terrifying effects. (For spoilers, scroll to the bottom).
   
 * Packed With Interactions: Verity has access to almost every piece of functionality present in Pokemon Emerald. He can make your greatest dreams (or worst nightmares) come true.
 
