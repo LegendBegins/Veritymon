@@ -1,71 +1,85 @@
-# Emerald "Entity" horror mod — Verity
+# Veritymon
 
-A live horror mod for **Pokémon Emerald (US)** on **mGBA standalone**. A Pokémon called
-**Verity** joins your party; you talk to it through an in-game keyboard, and an external LLM
-("Verity") grants your wishes by driving the game's own **script engine** at runtime — no ROM
-recompile, no patching tools. The more you lean on it, the more it changes: a warm helper at
-first, then unsettling, eerie, and finally malevolent — culminating in a Hall-of-Fame showdown
-that **corrupts your save** as the deliberate creepypasta ending.
+A horror mod for **Pokémon Emerald (US)**.
 
-> ⚠️ **The ending is destructive on purpose.** If Verity beats you in the finale, it overwrites
-> your in-game save so the file reports as corrupt on next boot, then soft-resets. This is a local
-> scare effect only — it does nothing to your computer, your ROM file, or anything outside the
-> emulator's save data. **Use mGBA savestates** while playing so you can roll back. Don't run this
-> on a save you can't afford to lose.
+All seemed normal in the Hoenn region... at least until *that* day. Eldritch forces far beyond the NPCs' comprehension sheared open the underlying substrate of their reality and left... something. Some**one**. It's said that since that day, trainers who stare into the void long enough just might be gifted to hear the void speak back.
+
+Press L+R at any time to open an in-game keyboard and chat directly with Verity, a mysterious entity who controls your game. Powered by an LLM that drives the game's own scripting engine, Verity is here to chat with you, answer questions, and grant your wishes.
+
+...Or so it seems.
+
+## Features
+
+* A Living, Unhinged Entity: Verity isn't static. The more you lean on him for help, the more his behavior shifts, mutates, and unravels. What starts as a helpful companion slowly reveals that something is deeply wrong.
+
+* Evolving Phases & Multiple Endings: Experience a multi-staged descent packed with beneficial, bizarre, and outright terrifying effects. (For spoilers, scroll to the bottom).
+
+* No ROM Patching Required: Jump straight into the horror without messing with complex setup tools or custom ROMs.
+
+* Three Distinct Play Modes:
+  * Verity (Default): The intended psychological horror experience. Use him at your own risk.
+  * Friendship: A safer mode where Verity remains a loyal, unbetraying companion throughout (no spookiness or ending).
+  * Debug: Access all of Verity's capabilities sandbox-style, even without an active LLM connection.
+
+> ⚠️ **Verity (Default) is intentionally destructive to your save.** Don't run this mode
+> on a save you can't afford to lose. This is a local
+> scare effect only; it does nothing to your computer, your ROM file, or anything outside the
+> emulator's save data.
 
 ---
 
 ## What you need
-- **mGBA standalone** with Lua scripting (0.10+), the desktop build with **Tools ▸ Scripting…**.
+- **mGBA standalone** with Lua scripting (0.10+), accessible via **Tools ▸ Scripting…**. I have not tested this mod with other emulators.
 - A **Pokémon Emerald (US)** ROM, loaded in mGBA.
-- **Python 3** (standard library only — nothing to `pip install`).
+- **Python 3** (standard library only — no packages required to install).
 - An **LLM** to be Verity. Any one of:
-  - **Anthropic** (`ANTHROPIC_API_KEY`), or
   - **OpenAI** (`OPENAI_API_KEY`), or
-  - **a local / custom** OpenAI-compatible server (Ollama, LM Studio, vLLM, a proxy) — no key needed.
-
----
-
-## Install
-1. **Get the files.** Put all four in the **same folder** (the agent imports the other modules):
-   `entity_bridge.lua`, `entity_llm.py`, `entity_agent.py`, `poke_data.py`.
-2. **Install mGBA** (standalone desktop, **0.10+**) from <https://mgba.io/downloads.html>. It must have
-   the scripting console (**Tools ▸ Scripting…**).
-3. **Install Python 3** (3.8+). No packages to install — everything uses the standard library. If
-   `python` isn't found, use `python3` in the commands below.
-4. **Supply your own Pokémon Emerald (US) ROM** and open it in mGBA. (Not included.)
-5. **Have an LLM ready** — set one of the env vars above, or point `--provider custom` at a local
-   OpenAI-compatible server (no key needed).
+  - **Anthropic** (`ANTHROPIC_API_KEY`), or
+  - **a local / custom** OpenAI-compatible server (Llama.cpp, Ollama, LM Studio, vLLM, a proxy, etc.) — no key needed.
 
 ---
 
 ## Quick start
-1. **Load the bridge.** In mGBA, open your Emerald ROM, then **Tools ▸ Scripting… ▸ File ▸ Load
-   script** and pick `entity_bridge.lua`. The script console should print:
+
+1. **Load the bridge.** In mGBA, open your Emerald ROM, then **Tools ▸ Scripting… ▸ File ▸ Load script** and pick `entity_bridge.lua`. The script console should print:
+
    ```
    entity-bridge v3 loaded.
    [entity] listening on 127.0.0.1:8888
    ```
-   (The bridge re-applies Verity's custom sprite/stats every time it loads, so reload it after any
-   edit, and after loading a savestate it heals itself automatically.)
-2. **Give Verity a brain.** In a terminal, set your key and launch the agent:
+
+2. **Give Verity a brain.** In a terminal, set your key using whichever line matches your environment and preferred API:
+
    ```bash
-   # Anthropic — set the key for your shell, then run:
-   set ANTHROPIC_API_KEY=sk-ant-...      &  python entity_llm.py         # Windows (cmd)
-   $env:ANTHROPIC_API_KEY="sk-ant-..."   ;  python entity_llm.py         # Windows (PowerShell)
-   export ANTHROPIC_API_KEY=sk-ant-...   && python entity_llm.py         # macOS/Linux
+   # OpenAI: Set the key for your shell
+   set OPENAI_API_KEY=sk-...        # Windows (cmd)
+   $env:OPENAI_API_KEY="sk-..."     # Windows (PowerShell)
+   export OPENAI_API_KEY=sk-...     # macOS/Linux
 
-   # OpenAI  (set OPENAI_API_KEY the same way first)
-   python entity_llm.py --provider openai --model gpt-4o
-
-   # Local / custom (no key required)
-   python entity_llm.py --provider custom --base-url http://localhost:11434/v1 --model llama3.1
+   # Anthropic
+   set ANTHROPIC_API_KEY=sk-ant-...     # Windows (cmd)
+   $env:ANTHROPIC_API_KEY="sk-ant-..."  # Windows (PowerShell)
+   export ANTHROPIC_API_KEY=sk-ant-...  # macOS/Linux
    ```
-   You should see: `Verity online via <provider>/<model>. Type a request, or use the in-game
-   keyboard. Ctrl-C to quit.` (with `--friend` it adds ` (friendship mode)`).
-3. **Talk to Verity** (two ways, below). Verity joins your party on your first request.
+  
+    **Then run**
+    ```bash
+    python entity_llm.py
+    ```
+
+    ### Locally Hosted LLMs
+    For locally hosted LLMs (great choice btw), set the provider to `custom` and your base URL to whatever host serves your OpenAI-compatible API (for most people, this is going to be localhost), along with the model name you want to use.
+   ```bash
+   # Local / custom (no key required)
+   python entity_llm.py --provider custom --base-url http://localhost:11434/v1 --model qwen-3.8-27b
+   ```
+
+   You should see: `Verity online via <provider>/<model>. Type a request, or use the in-game keyboard. Ctrl-C to quit.`
+
+4. **Talk to Verity** (two ways, below). Verity joins your party on your first request.
 
 ---
+
 
 ## Talking to Verity
 There are **two input channels**, and they behave identically:
@@ -84,6 +98,15 @@ below), `[name ...]`, `[renamed ...]`, `[FINALE]`, etc.
 
 ---
 
+## Files
+- `entity_bridge.lua` — mGBA-side bridge: socket server, memory read/write, script-engine driver +
+  bytecode assembler, party read/write, the custom Verity species, escalation, and the finale.
+- `entity_llm.py` — **Verity LLM agent** (Anthropic / OpenAI / custom, stdlib-only, no SDKs).
+- `entity_agent.py` — manual client for debug mode: Direct access to everything Verity can do and more.
+- `poke_data.py` — generated name tables (moves / species / items / natures / songs).
+
+---
+
 ## Launch options (`entity_llm.py`)
 | Flag | Default | Meaning |
 |------|---------|---------|
@@ -91,116 +114,114 @@ below), `[name ...]`, `[renamed ...]`, `[FINALE]`, etc.
 | `--model <name>` | per provider | Model id. Defaults: `claude-sonnet-5` (anthropic), `gpt-4o` (openai); **required** for custom (or `CUSTOM_MODEL`). |
 | `--base-url <url>` | — | **custom only.** The OpenAI-compatible endpoint, e.g. `http://localhost:11434/v1` (or `CUSTOM_BASE_URL`). |
 | `--friend` / `--friendship` | off | **Non-spooky mode.** Verity never escalates: it stays the calm, warm companion forever (see below). |
-| `--host <ip>` | `127.0.0.1` | Host of the **bridge** socket (not the LLM). Change only if mGBA runs elsewhere. |
-| `--port <n>` | `8888` | Bridge socket port (must match the bridge). |
+| `--host <ip>` | `127.0.0.1` | Host of the mGBA Lua **bridge** socket (not the LLM). Change only if mGBA runs elsewhere. |
+| `--port <n>` | `8888` | Bridge socket port for mGBA Lua (must match the bridge). |
 
 **Environment variables:** `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `CUSTOM_BASE_URL`,
-`CUSTOM_MODEL`, `CUSTOM_API_KEY` (custom key is optional; local servers usually need none).
+`CUSTOM_MODEL`, `CUSTOM_API_KEY` (custom key is optional; local servers usually don't need one).
 
 ---
+
+# The following content may contain [SPOILERS]! Tread carefully!
 
 ## Modes & escalation
 
 ### Friendship mode (`--friend`)
 Launch with `--friend` for a safe, cozy run: Verity stays warm and helpful and **never turns**.
 Internally it locks the "spook" score at 0, so there are no haunts, no creepy transformation, and
-no finale. You can also toggle it live over the socket: `friendship on` / `friendship off`.
+no finale. You can also toggle it live using debug mode: `friendship on` / `friendship off`.
 
 ### The escalation ("spook")
 Left to escalate, Verity gets darker the more you pull it into the world. Its mood is tied to a
 hidden **spook** score (stored as Verity's level, so it **persists across saves/reloads**). Things
-that raise it: talking to it, earning/forcing badges, demanding legendaries or a Master Ball,
+that raise the spook score include: talking to Verity, earning/forcing badges, demanding legendaries or a Master Ball,
 battling with Verity in your party. As it climbs, the persona shifts through tiers:
 
 | Spook | Tier | Feel |
 |------:|------|------|
 | 0–4 | **Calm** | Warm, helpful, concise. |
-| 5–14 | **Unsettled** | Still helpful, but slightly *off* — the occasional deniable flourish. |
-| 15–29 | **Eerie** | The mask slips. Acts unbidden (music/silence/items), "wrong-warps" you on the way to places, may hand you creepy Pokémon. |
+| 5–14 | **Unsettled** | Still helpful, but slightly *off*. |
+| 15–29 | **Eerie** | The mask slips. Acts unbidden (music/silence/items), wrongwarps you while traveling, may hand you creepy Pokémon. |
 | 30–39 | **Malevolent** | In control and cruel. Corrupts your party in targeted ways, strands you in grim places, uses what it knows against you. |
-| 40+ | **Unbound** | Acts purely on its own whims with any tool. |
+| 40+ | **Unbound** | Acts purely on its own whims and will use its tools freely. |
 
 ### The finale
-Once malevolent, each message has a small chance to trigger the **Hall-of-Fame showdown**: Verity
-is pulled from your party and you fight it as a boss. Lose, and your save is corrupted and the game
-soft-resets after you read its last words (the destructive ending — savestates are your undo). Win
-(rare — it's near-unwinnable), and you walk away to a different, quieter dread. Friendship mode
-disables all of this.
+Once malevolent, each message has a small chance to trigger **Showdown Mode**: Verity
+is pulled from your party and you fight it as a boss. Lose, and your save is corrupted after a parting monologue. Win
+(almost impossible. If you pull it off, make a video about it plz), and you walk away to a different, still melancholic ending. Friendship mode
+disables this event entirely.
 
-### Gifts Verity can grant (when you ask)
-Beyond the obvious (healing, items, money, a stronger team via `givemon`/`createmon`), Verity can:
-- **Make a Pokémon shiny** — ask and it uses `shiny <slot>` on one you already have (keeping it
-  obedient), or gives a brand-new shiny with `createmon <species> <level> shiny`.
-- **Summon Mirage Island** — the hidden Route 130 island, which it can actually make appear
-  (`mirageisland`). You'll need Surf to reach it.
-These are *gifts*: at higher escalation Verity may still twist ordinary requests, but a sincere ask
-for a shiny or for Mirage Island is granted rather than subverted.
-
-### Renaming Verity
-Take Verity to the in-game **Name Rater** (Slateport) and rename it; from then on it uses the new
-name in its dialogue and refers to itself by it. (The Name Rater only renames party members, so do
-it while Verity is in your party — the name sticks if you later box it.)
 
 ### If the game ever locks up
-If the player ever freezes with no text box (a wedged script), send **`unstick`** over the socket
-(e.g. via `entity_agent.py` or `nc 127.0.0.1 8888`) to recover without a savestate.
+If the player ever freezes with no text box, send **`unstick`** over debug mode
+(via `entity_agent.py`) to recover without a savestate.
 
 ---
 
 ## Manual / debug control (`entity_agent.py`)
-You don't need the LLM to drive the bridge. `entity_agent.py` is a plain client that resolves
-names → IDs and sends commands straight to the bridge:
+Even without an LLM, you can still access the full capabilities of this mod. `entity_agent.py` is a manual client that allows users to send commands straight to the game. Plus, debug mode can run **in parallel with other modes**, so you can tweak Verity's options live.
 ```bash
 python entity_agent.py              # type commands; names are accepted (e.g. `spawn charizard 30`)
 ```
 Useful lookups: `search <songs|items|moves|species> <query>`, `list <weather|maps|natures|types|badges>`,
-`catalog`. Any bridge verb (below) works here too.
+`catalog`. Any debug command (below) works here too.
 
 ---
-
-## Files
-- `entity_bridge.lua` — mGBA-side bridge: socket server, memory read/write, script-engine driver +
-  bytecode assembler, party read/write, the custom Verity species, escalation, and the finale.
-- `entity_llm.py` — **Verity LLM agent** (Anthropic / OpenAI / custom, stdlib-only, no SDKs).
-- `entity_agent.py` — manual client: name resolution (`translate`) and lookups (`search`/`catalog`).
-- `poke_data.py` — generated name tables (moves / species / items / natures / songs).
-
----
-
-## Reference — bridge protocol (TCP `127.0.0.1:8888`, newline-terminated)
-The LLM uses a tiny surface — one action verb (`game_command`, which runs any line below) plus two
-read verbs (`search`, `get_state`). You can send these raw for manual control. Agent → bridge:
 
 **World / effects**
 - `msgbox [-scroll|-page] <text>` — field message box (auto-wrapped; `{n}{l}{p}` tokens). Prefixed with Verity's current name.
-- `encounter <species> <level>` — start a wild battle (a fight; does NOT add to party). `spawn` = alias.
-- `item <item> [qty]` · `heal` · `money <amount>`
-- `warp <town> [x y]` — town name lands at its entrance; or `warp <group> <num> [x y]`
-- `mirageisland` — **gift:** summon the hidden Mirage Island and send the player to Route 130 (needs Surf to reach it). Verity grants this when the player asks for it.
-- `setflag <flag|badgeN>` / `clearflag ...` — flags & badges (`badge1`..`badge8`, or `0x` hex)
-- `fanfare <song>` (one-shot) · `bgm <song>` / `music <song>` (looping; `bgm off` = silence) · `sound <se>`
-- `weather <type>` — `rain`, `fog`, `thunderstorm`, `sandstorm`, `overcast`, …
 - `seq <a> | <b> | <c>` — run several effects in one script
+- `encounter <species> <level>` — start a wild battle (a fight; does NOT add to party). `spawn` = alias.
+- `item <item> [qty]`
+- `heal`
+- `money <amount>`
+- `warp <town> [x y]` — town name lands at its entrance; or `warp <group> <num> [x y]`
+- `mirageisland` — summon the hidden Mirage Island and send the player to Route 130.
+- `setflag <flag|badgeN>` / `clearflag ...` — flags & badges (`badge1`..`badge8`, or `0x` hex)
+- `fanfare <song>` (one-shot)
+- `bgm <song>` / `music <song>` (looping; `bgm off` = silence)
+- `sound <se>`
+- `weather <type>` — `rain`, `fog`, `thunderstorm`, `sandstorm`, `overcast`, …
 - `ask` — open the 15-char keyboard (same as L+R)
 - `noclip on|off` — walk through walls
+- `detour <destination>` — eerie double-warp: drag the player through a grim place, then on to `<destination>`
+- `wrongwarp` — malevolent: strand the player somewhere grim (random; NOT where they asked)
 
 **Party** (reads/writes the gen-3 encrypted structure directly)
-- `party` · `mon <slot>` · `setmove <slot> <idx0-3> <move>` · `setitem` · `setfriendship <slot> <0-255>`
-- `sethp` · `setstatus` · `setspecies <slot> <species>` · `setlevel <slot> <1-100>`
-- `setiv <slot> <idx0-5> <0-31>` · `setev <slot> <idx0-5> <0-255>` (idx: hp,atk,def,spd,spatk,spdef)
-- `setmoveset <slot>` · `givemon <slot> <species> <level>` (transform a slot) · `createmon <species> <level> [nature] [shiny]` (new slot)
-- `shiny <slot>` — **gift:** make an existing party mon shiny (keeps its OT id → stays obedient). Append `shiny` to `createmon` for a new shiny one.
-- `disobey <slot>` · `qmon` — corruption effects (make a mon disobey / slip in a glitch "?" mon)
+- `party`
+- `mon <slot>`
+- `setmove <slot> <idx0-3> <move>`
+- `setfriendship <slot> <0-255>`
+- `setitem <slot> <item>` — give a party mon a held item
+- `sethp <slot> <hp>` — set current HP
+- `setstatus <slot> <status>` — set status condition (`0` = none)
+- `setspecies <slot> <species>`
+- `setlevel <slot> <1-100>`
+- `setiv <slot> <idx0-5> <0-31>`
+- `setev <slot> <idx0-5> <0-255>` (idx: hp,atk,def,spd,spatk,spdef)
+- `setmoveset <slot>`
+- `givemon <slot> <species> <level>` (transform a slot)
+- `createmon <species> <level> [nature] [shiny]` (new slot)
+- `shiny <slot>` — make an existing party mon shiny (keeps its OT id → stays obedient). Append `shiny` to `createmon` for a new shiny one.
+- `disobey <slot>` - make a mon disobey
+- `qmon` — corruption effects ( / slip in a glitch "?" mon)
 
 **State / meta**
 - `state` — world snapshot (JSON): player, verity (current name), inField, money, badges, map/pos/weather, finale state, friend flag, party brief
 - `help` — authoritative JSON list of every verb + arg shape (baked into the LLM prompt at startup)
-- `ping` · `raw <hexpairs>` · `scratch <hexaddr>` — debug
+- `ping`
+- `raw <hexpairs>`
+- `scratch <hexaddr>` — debug
 - `unstick` — recover a wedged script context (frozen player) without a savestate
 
-**Harness-only** (the LLM is blocked from these; for your manual use): `friendship on|off`,
-`spook [add N|set N]`, `showdown` (force the finale), `haunt <kind>`, `summonverity`, `patchentity`,
-`romtest`.
+**Harness-only** (the LLM is blocked from these; for your manual use):
+- `friendship on|off`
+- `spook [add N|set N]`
+- `showdown` (force the finale)
+- `haunt <kind>`
+- `summonverity`
+- `patchentity`
+- `romtest`
 
 Bridge → client replies: `RESULT ok` / `ERR <why>` · `REQUEST <text>` (you talked to it) ·
 `STATE {json}` · `EVENT <...>` · `pong`.
@@ -211,6 +232,7 @@ Names are accepted everywhere the agent resolves them (species/items/moves/songs
 
 ---
 
+
 ## How it works (short version)
 - **Running a script from Lua:** the bridge stages bytecode in an EWRAM scratch buffer, writes the
   global script context (`sGlobalScriptContext`), and sets its status to RUNNING; the overworld
@@ -218,7 +240,8 @@ Names are accepted everywhere the agent resolves them (species/items/moves/songs
   with a short settle so back-to-back scripts can't collide.
 - **Custom species:** Verity reuses an unused "?" species slot, patched at runtime via the
   `emu.memory.cart0` domain (plain ROM writes are ignored by the CPU bus). Patches aren't saved, so
-  the bridge re-applies them on every load. (Don't open Verity's Pokédex entry — its dex number is
-  unpatched.)
+  the bridge re-applies them on every load.
 - **Requests:** the in-game keyboard's text is read from RAM and emitted as `REQUEST <text>`.
 - **Escalation persists** because the spook score *is* Verity's level, saved with the mon.
+
+AI Disclaimer: AI was used in the development of this mod with *substantial* human contribution. I mean, it's a mod about AI. It's pretty on-brand.
