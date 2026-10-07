@@ -34,7 +34,7 @@ Press L+R at any time to open an in-game keyboard and chat directly with Verity,
 - **mGBA standalone** with Lua scripting (0.10+), accessible via **Tools ▸ Scripting…**. I have not tested this mod with other emulators.
 - A **Pokémon Emerald (US)** ROM, loaded in mGBA.
 - **Python 3** (standard library only — no packages required to install).
-- An **LLM** to be Verity. Any one of:
+- An **LLM** to be Verity (unless you play exclusively in debug mode, which does not require an LLM). Any one of:
   - **OpenAI** (`OPENAI_API_KEY`), or
   - **Anthropic** (`ANTHROPIC_API_KEY`), or
   - **a local / custom** OpenAI-compatible server (Llama.cpp, Ollama, LM Studio, vLLM, a proxy, etc.) — no key needed.
