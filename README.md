@@ -14,7 +14,7 @@ Press L+R at any time to open an in-game keyboard and chat directly with Verity,
 
 * Evolving Phases & Multiple Endings: Experience a multi-staged descent loaded with beneficial, bizarre, and outright terrifying effects. (For spoilers, scroll to the bottom).
   
-* Packed With Interactions: Verity has access to almost every piece of functionality present in Pokemon Emerald. He can make your greatest dreams (or worst nightmares) come true.
+* Packed With Interactions: Verity has access to almost every game mechanic present in Pokemon Emerald. He can make your greatest dreams (or worst nightmares) come true.
 
 * No ROM Patching Required: Jump straight into the horror without messing with complex setup tools or custom ROMs.
 
